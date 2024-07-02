@@ -1,10 +1,33 @@
 /* eslint-disable react/react-in-jsx-scope */
 
-import { ButtonType } from "../assets/types.d"
+import { useState } from "react"
+import { ButtonType, Project } from "../assets/types.d"
 import Button from "../components/Button"
+import { useProjectsContext } from "../context/context"
 
-
+const INITIAL_STATE: Project = {
+  id: crypto.randomUUID(),
+  name: '',
+  client: '',
+  description: '',
+  tasks: []
+}
 function CreateProject(): JSX.Element {
+  const [inputs, setInputs] = useState(INITIAL_STATE)
+
+  const {createProject} = useProjectsContext()
+
+  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault()
+    setInputs(INITIAL_STATE)
+    createProject(inputs)
+    window.location.href = '/projects'
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+    setInputs({...inputs, [e.target.name]: e.target.value})
+  }
+
   return (
     <main className="createProject">
       <section>
@@ -15,14 +38,20 @@ function CreateProject(): JSX.Element {
         </Button>
 
       </section>
-      <form className="createProjectForm">
+      <form className="createProjectForm" onSubmit={(e)=>handleOnSubmit(e)}>
         <label>
-          <input type="text" placeholder="Project name" />
+          <span>Project Name</span>
+          <input value={inputs.name} required type="text" name="name" placeholder="Project name" onChange={e=>handleChange(e)} />
         </label>
         <label>
-          <input type="text" placeholder="Project description" />
+          <span>Client</span>
+          <input value={inputs.client} required type="text" name="client" placeholder="Project Client" onChange={e=>handleChange(e)} />
         </label>
-        <input type="text" />
+        <label>
+          <span>Project Description</span>
+          <textarea value={inputs.description} required rows={6} maxLength={400} name="description" placeholder="Project description" onChange={e=>handleChange(e)} />
+        </label>
+        <input type="submit" value={"Create"}/>
       </form>
     </main>
   )
