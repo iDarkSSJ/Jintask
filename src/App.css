@@ -1,0 +1,128 @@
+:root {
+  --primary-color: #1d9bf0 ;
+}
+
+body {
+  margin: 0;
+}
+/* RESET */
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  padding: 0;
+}
+
+/* END RESET */
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--primary-color);
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1em 0;
+  min-width: 100%;
+  border-bottom: 1px solid #fff3;
+}
+
+.title {
+  font-family: Outfit, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen-Sans, Ubuntu, Cantarell, Helvetica Neue, sans-serif;
+  letter-spacing: 1px;
+  color: #fff;
+}
+
+.mainWrapper {
+  margin-top: 5rem;
+  display: flex;
+  justify-content: center;
+}
+
+main {
+  width: 1200px;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+main > h2 {
+  font-size: 2.5rem;
+}
+
+main > p {
+  opacity: .7;
+}
+
+a  {
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.projects {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.createProject {
+  font-size: 20px;
+  max-width: 800px;
+}
+
+.createProjectForm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.createProjectForm > input {
+  min-width: 200px;
+}
