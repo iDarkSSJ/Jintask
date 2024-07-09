@@ -2,10 +2,12 @@
 
 import { ButtonType } from "../assets/types.d"
 import Button from "../components/Button"
+import Project from "../components/ProjectInMain"
+import { useProjectsContext } from "../context/context"
 
 
 function Main(): JSX.Element {
-
+  const { projects } = useProjectsContext()
   return (
 
     <main>
@@ -19,7 +21,16 @@ function Main(): JSX.Element {
       </section>
 
       <section className="projects">
-        <p>There is not projects yet, <a href="/create">create new project</a></p>
+        {projects.length === 0 ? <p>There is not projects yet, <a href="/create">create new project</a></p> : ""}
+        {projects && projects.map(project =>
+          <Project
+          key={project.id}
+          title={project.name}
+          client={project.client}
+          description={project.description}
+          projectId={project.id}
+          />
+        )}
       </section>
     </main>
 

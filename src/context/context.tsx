@@ -1,5 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { createContext, useContext, ReactNode } from "react";
+import { createContext, useContext, ReactNode, useEffect } from "react";
 import useProjects from "./useProjects";
 import { Project, Task } from "../assets/types.d";
 
@@ -24,6 +24,7 @@ interface ProviderProps {
 export const Provider = ({ children }: ProviderProps): JSX.Element => {
   const {
     projects,
+    state,
     deleteProject,
     createProject,
     editProject,
@@ -31,6 +32,15 @@ export const Provider = ({ children }: ProviderProps): JSX.Element => {
     deleteTask,
     editTask,
   } = useProjects();
+
+  // ----------------------------------------------------------------
+  // ---------------------SAVE IN LOCAL STORAGE----------------------
+  // ----------------------------------------------------------------
+
+  useEffect(() => {
+    localStorage.setItem("projects", JSON.stringify(state));
+  }, [state])
+
 
   const value = {
     projects,

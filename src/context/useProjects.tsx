@@ -6,6 +6,11 @@ import { Action, Project, State, Task } from '../assets/types.d'
 const reducer = (state: State, action: Action): State => {
   const { type } = action
 
+  if (type === "SAVE_STATE") {
+    const { data } = action.payload
+    return data
+  }
+
   if (type === "DELETE_PROJECT") {
     const { projectId } = action.payload
     const newProjects = state.projects.filter(project => project.id !== projectId)
@@ -87,9 +92,17 @@ const INITIAL_STATE: State = {
   projects: []
 }
 
+const init = (): State => {
+  const savedProjects = localStorage.getItem("projects");
+  return savedProjects ? JSON.parse(savedProjects) : INITIAL_STATE;
+}
 
 export const useProjects = () => {
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE);
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE, init);
+
+  const saveState = (data: State) => {
+    dispatch({ type: 'SAVE_STATE', payload: {data} });
+  };
 
   const deleteProject = (projectId: string) => {
     dispatch({ type: 'DELETE_PROJECT', payload: { projectId } });
@@ -117,6 +130,8 @@ export const useProjects = () => {
 
   return {
     projects: state.projects,
+    state,
+    saveState,
     deleteProject,
     createProject,
     editProject,

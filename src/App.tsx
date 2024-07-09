@@ -14,6 +14,7 @@ function App(): JSX.Element {
         <div className="mainWrapper">
           <Router />
         </div>
+        <footer/>
       </Provider>
     </>
   )

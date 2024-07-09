@@ -6,7 +6,7 @@ export enum ButtonType {
 export enum TaskStatesEnum {
   pending = "pending",
   inProgress = "inProgress",
-  onHold = "oNHold",
+  onHold = "onHold",
   underReview = "underReview",
   completed = "completed"
 }
@@ -41,6 +41,7 @@ export interface State {
 }
 
 export type Action =
+  | { type: "SAVE_STATE", payload: { data: State } }
   | { type: "DELETE_PROJECT", payload: { projectId:  string} }
   | { type: "CREATE_PROJECT", payload: { Project : Project} }
   | { type: "EDIT_PROJECT", payload: { projectId: string, Project: Project } }

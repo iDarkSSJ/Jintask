@@ -4,23 +4,30 @@ import { useState } from "react"
 import { ButtonType, Project } from "../assets/types.d"
 import Button from "../components/Button"
 import { useProjectsContext } from "../context/context"
+import { useParams } from "react-router-dom"
 
-const INITIAL_STATE: Project = {
-  id: crypto.randomUUID(),
-  name: '',
-  client: '',
-  description: '',
-  tasks: []
-}
-function CreateProject(): JSX.Element {
+function EditProject(): JSX.Element {
+  const params = useParams()
+  const { projects } = useProjectsContext()
+
+  const project = projects.find(project => project.id === params.id)
+
+  const INITIAL_STATE: Project = {
+    id: project?.id || "",
+    name: project?.name || "",
+    client: project?.client ||'',
+    description: project?.description || '',
+    tasks: project?.tasks || []
+  }
+
   const [inputs, setInputs] = useState(INITIAL_STATE)
 
-  const {createProject} = useProjectsContext()
+  const { editProject } = useProjectsContext()
 
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault()
     setInputs(INITIAL_STATE)
-    createProject(inputs)
+    project ? editProject(project.id,inputs) : null
     window.location.href = '/'
   }
 
@@ -31,8 +38,8 @@ function CreateProject(): JSX.Element {
   return (
     <main className="createProject">
       <section>
-        <h2>Create project</h2>
-        <p>Fill out the form below to create a project.</p>
+        <h2>Edit project</h2>
+        <p>Fill out the form below to edit a project.</p>
         <Button type={ButtonType.navigate}>
           Back to Projects
         </Button>
@@ -51,10 +58,10 @@ function CreateProject(): JSX.Element {
           <span>Project Description</span>
           <textarea value={inputs.description} required rows={6} maxLength={400} name="description" placeholder="Project description" onChange={e=>handleChange(e)} />
         </label>
-        <input type="submit" value={"Create"}/>
+        <input type="submit" value={"Save"}/>
       </form>
     </main>
   )
 }
 
-export default CreateProject
+export default EditProject
