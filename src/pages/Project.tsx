@@ -71,7 +71,10 @@ function Project({ projectId }: Props) {
       <section className="projectFeatures">
         <h2>{project?.name}</h2>
         <p>{project?.description}</p>
-        <Button type={ButtonType.navigate}>Add Task</Button>
+        <div className="wrapper">
+          <Button type={ButtonType.navigate}>Back to Projects</Button>
+          <Button type={ButtonType.navigate}>Add Task</Button>
+        </div>
       </section>
       <section className="projectTasks">
         <h2>Tasks</h2>
@@ -82,52 +85,52 @@ function Project({ projectId }: Props) {
               {tasks ? tasks.map((t) => {
                 if (t.state === TaskStatesEnum.pending) {
                   return <Task key={t.id} task={t} />
-                } 
+                }
               }) : null}
             </div>
           </div>
           <div className="TaskStatus">
             <h3 style={{ "--border-color": "#f32b52" } as React.CSSProperties}>In Progress</h3>
             <div className="Tasks">
-            {tasks ? tasks.map((t) => {
+              {tasks ? tasks.map((t) => {
                 if (t.state === TaskStatesEnum.inProgress) {
                   return <Task key={t.id} task={t} />
-                } 
+                }
               }) : null}
             </div>
           </div>
           <div className="TaskStatus">
             <h3 style={{ "--border-color": "#535bf2" } as React.CSSProperties}>On Hold</h3>
             <div className="Tasks">
-            {tasks ? tasks.map((t) => {
+              {tasks ? tasks.map((t) => {
                 if (t.state === TaskStatesEnum.onHold) {
                   return <Task key={t.id} task={t} />
-                } 
+                }
               }) : null}
             </div>
           </div>
           <div className="TaskStatus">
             <h3 style={{ "--border-color": "#f38bf2" } as React.CSSProperties}>Under Review</h3>
             <div className="Tasks">
-            {tasks ? tasks.map((t) => {
+              {tasks ? tasks.map((t) => {
                 if (t.state === TaskStatesEnum.underReview) {
                   return <Task key={t.id} task={t} />
-                } 
+                }
               }) : null}
             </div>
           </div>
           <div className="TaskStatus">
             <h3 style={{ "--border-color": "#53f352" } as React.CSSProperties}>Completed</h3>
             <div className="Tasks">
-            {tasks ? tasks.map((t) => {
+              {tasks ? tasks.map((t) => {
                 if (t.state === TaskStatesEnum.completed) {
                   return <Task key={t.id} task={t} />
-                } 
+                }
               }) : null}
             </div>
           </div>
         </section>
-          {tasks.length === 0 ? <h3 style={{textAlign: "center"}}>There are no tasks in this Project, <a>add a task</a> to see it.</h3> : ""}
+        {tasks.length === 0 ? <h3 style={{ textAlign: "center" }}>There are no tasks in this Project, <a>add a task</a> to see it.</h3> : ""}
       </section>
     </main>
   )
