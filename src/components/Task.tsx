@@ -2,10 +2,13 @@
 
 import { useEffect, useRef, useState } from "react"
 import { VerticalMenu } from "../assets/icons"
-import { ButtonType } from "../assets/types.d"
-import Button from "./Button"
+import { TaskModalName } from "../assets/types.d"
+import DeleteTaskModal from "./Modal/DeleteTaskModal"
+import EditTaskModal from "./Modal/EditTaskModal"
+import ViewTaskModal from "./Modal/ViewTaskModal"
 
 type Props = {
+  projectId: string
   task: {
     id: string
     name: string
@@ -13,8 +16,13 @@ type Props = {
   }
 }
 
-function Task({ task }: Props): JSX.Element {
+function Task({ task, projectId }: Props): JSX.Element {
   const [onView, setOnView] = useState(false)
+  const [showDelModal, setShowDelModal] = useState(false)
+  const [showEditModal, setShowEditModal] = useState(false)
+  const [showViewModal, setShowViewModal] = useState(false)
+
+
 
   const refOne = useRef<HTMLDivElement>(null)
 
@@ -38,9 +46,17 @@ function Task({ task }: Props): JSX.Element {
     setOnView(!onView)
   }
 
-  // const handleDeleteModal = (): void => {
-  //   setShowModal(true)
-  // }
+  const handleModal = (name: TaskModalName): void => {
+    if (name === TaskModalName.EDIT_TASK) {
+      setShowEditModal(true)
+    }
+    if (name === TaskModalName.DELETE_TASK) {
+      setShowDelModal(true)
+    }
+    if (name === TaskModalName.VIEW_TASK) {
+      setShowViewModal(true)
+    }
+  }
 
   return (
     <div className="Task">
@@ -50,10 +66,17 @@ function Task({ task }: Props): JSX.Element {
         <VerticalMenu />
       </button>
       <div ref={refOne} className={onView ? "taskMenuButton onView" : "taskMenuButton"}>
-        <Button type={ButtonType.navigate} path={"/"}>View</Button>
-        <Button type={ButtonType.navigate} path={"/"}>Edit Project</Button>
-        <button>Delete Project</button>
+        <button onClick={() => handleModal(TaskModalName.VIEW_TASK)}>View</button>
+        <button onClick={() => handleModal(TaskModalName.EDIT_TASK)}>Edit Task</button>
+        <button onClick={() => handleModal(TaskModalName.DELETE_TASK)}>Delete Task</button>
       </div>
+
+      <DeleteTaskModal projectId={projectId} taskId={task.id} showDelModal={showDelModal} setShowDelModal={setShowDelModal} />
+
+      <EditTaskModal projectId={projectId} taskId={task.id} showEditModal={showEditModal} setShowEditModal={setShowEditModal} />
+
+      <ViewTaskModal projectId={projectId} taskId={task.id} showViewModal={showViewModal} setShowViewModal={setShowViewModal} />
+
     </div>
   )
 }

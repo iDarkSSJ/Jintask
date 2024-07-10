@@ -11,12 +11,19 @@ export enum TaskStatesEnum {
   completed = "completed"
 }
 
-const SUPPORTED_TASK_STATES = {
-  pending: "pending",
-  inProgress: "inProgress",
-  onHold: "onHold",
-  underReview: "underReview",
-  completed: "completed"
+export enum TaskModalName {
+  CREATE_TASK = "CREATE_TASK",
+  EDIT_TASK = "EDIT_TASK",
+  DELETE_TASK = "DELETE_TASK",
+  VIEW_TASK = "VIEW_TASK"
+}
+
+export const SUPPORTED_TASK_STATES = {
+  pending: "Pending",
+  inProgress: "In Progress",
+  onHold: "On Hold",
+  underReview: "Under Review",
+  completed: "Completed"
 }
 
 export type TaskStates = keyof typeof SUPPORTED_TASK_STATES

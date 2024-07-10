@@ -126,11 +126,11 @@ a  {
   border-radius: 1rem;
 }
 
-.createProjectForm > label {
+.createProjectForm > label, .createTaskForm > label {
   width: 100%;
 }
 
-.createProjectForm > label > input, textarea {
+.createProjectForm > label > input, textarea, .createTaskForm > label > input, textarea, select, label > input {
   font-family: inherit;
   width: 100%;
   margin: 1rem 0;
@@ -147,11 +147,16 @@ a  {
   }
 }
 
-.createProjectForm > label > span {
+option {
+  font-size: 1rem;
+  background-color: var(--bgc-main-background-color);
+}
+
+.createProjectForm > label > span, .createTaskForm > label > span {
   font-weight: 600;
 }
 
-.createProjectForm > input[type="submit"] {
+.createProjectForm > input[type="submit"], .createTaskForm > input[type="submit"], input[type="submit"] {
   width: 100%;
 }
 
@@ -283,6 +288,7 @@ a  {
 }
 
 .ModalWrapper {
+  backdrop-filter: blur(6px);
   position: fixed;
   top: 0;
   left: 0;
@@ -297,6 +303,7 @@ a  {
 
 .ModalOnView {
   display: flex;
+  animation: fadeIn 300ms both;
 }
 
 .Modal {
@@ -307,10 +314,21 @@ a  {
   background-color: var(--bgc-main-background-color);
 }
 
+
+
+.ModalView {
+  min-width: 800px;
+  padding: 2.5rem;
+}
+
 .projectFeatures {
   h2 {
     font-size: 2.5rem;
   }
+}
+
+.ModalCreate > h2 {
+  font-size: 2rem;
 }
 
 .projectTasks {
@@ -325,6 +343,7 @@ a  {
 
 .TasksList {
   display: flex;
+  gap: 1rem;
   justify-content: space-between;
 }
 
