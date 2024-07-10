@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+
 /* eslint-disable react/react-in-jsx-scope */
 
 import { FormEvent, useEffect, useRef, useState } from "react"
@@ -27,7 +29,7 @@ function EditTaskModal({ showEditModal, projectId, setShowEditModal, taskId }: P
   const [newTask, setNewTask] = useState<taskType>(INITIAL_STATE)
   
   useEffect(() => {
-    const closeModal = (e: MouseEvent) => {
+    const closeModal = (e: MouseEvent):void => {
       if (refOne.current && !refOne.current.contains(e.target as Node)) {
         setShowEditModal(false)
         setNewTask(INITIAL_STATE)
@@ -39,7 +41,7 @@ function EditTaskModal({ showEditModal, projectId, setShowEditModal, taskId }: P
     } else {
       document.removeEventListener("mousedown", closeModal)
     }
-  }, [showEditModal, setShowEditModal])
+  }, [showEditModal, setShowEditModal, INITIAL_STATE])
 
   const handleEditTask = (e: FormEvent): void => {
     e.preventDefault()

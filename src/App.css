@@ -224,7 +224,7 @@ option {
 
 .projectMenuButton,.taskMenuButton {
   z-index: 100;
-  bottom: -3.5rem;
+  top: 6rem;
   right: 2rem;
   position: absolute;
   background-color: #213547;
@@ -375,9 +375,11 @@ option {
   gap: .5rem;
 
   & > h4 {
+    max-width: 95%;
     font-size: 1.4rem;
   }
-  & >p {
+  & > p {
+    max-width: 80%;
     margin: 0;
     padding: 0;
     font-size: 1rem;
@@ -396,7 +398,7 @@ option {
 
 .taskMenuButton {
   box-shadow: 0 0 10px #fff5;
-  bottom: -5rem;
+  top: 3rem;
   right: 2rem;
   background-color: #22323f;
 }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/react-in-jsx-scope */
 import { useEffect, useRef, useState } from "react";
 import { VerticalMenu } from "../assets/icons";
@@ -6,37 +7,57 @@ import Button from "./Button";
 import { useProjectsContext } from "../context/context";
 
 type ProjectProps = {
-  title: string;
-  description: string;
-  client: string;
-  projectId: string;
-};
+  title: string
+  description: string
+  client: string
+  projectId: string
+  menuOpen: string | null
+  setMenuOpen: (isOpen: string) => void
+}
 
 
-function ProjectInMain({ title, description, client, projectId }: ProjectProps): JSX.Element {
-  const [onView, setOnView] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+function ProjectInMain({ title, description, client, projectId, menuOpen, setMenuOpen }: ProjectProps): JSX.Element {
+  const [onView, setOnView] = useState(false)
+  const [showModal, setShowModal] = useState(false)
   const { deleteProject } = useProjectsContext()
 
   const refOne = useRef<HTMLDivElement>(null)
+  const refModal = useRef<HTMLElement>(null)
 
 
   useEffect(() => {
-    const closeMenu = (e: MouseEvent) => {
+    const closeMenu = (e: MouseEvent): void => {
       if (refOne.current && !refOne.current.contains(e.target as Node)) {
         setOnView(false)
       }
     }
 
-    if (onView) {
-      window.addEventListener("click", closeMenu)
+    const closeModal = (e: MouseEvent): void => {
+      if (refModal.current && !refModal.current.contains(e.target as Node)) {
+        setShowModal(false)
+      }
+    }
+
+    if (showModal) {
+      document.addEventListener("mousedown", closeModal)
+    } else {
+      document.removeEventListener("mousedown", closeModal)
+    }
+
+
+    if (onView && menuOpen === projectId) {
+      window.addEventListener("mousedown", closeMenu)
+    }
+    else {
+      window.removeEventListener("mousedown", closeMenu)
     }
     return () => {
-      window.removeEventListener("click", closeMenu)
+      window.removeEventListener("mousedown", closeMenu)
     }
-  }, [onView])
+  }, [onView, menuOpen, setMenuOpen, showModal, setShowModal])
 
   const handleOnClick = (e: React.MouseEvent): void => {
+    setMenuOpen(projectId)
     e.stopPropagation()
     setOnView(!onView)
   }
@@ -44,7 +65,7 @@ function ProjectInMain({ title, description, client, projectId }: ProjectProps):
   const handleDeleteModal = (): void => {
     setShowModal(true)
   }
-  
+
   return (
     <article className="project">
       <h3><a href={"/project/" + projectId}>{title}</a></h3>
@@ -55,11 +76,11 @@ function ProjectInMain({ title, description, client, projectId }: ProjectProps):
       </button>
       <div className={onView ? "projectMenuButton onView" : "projectMenuButton"} ref={refOne}>
         <Button type={ButtonType.navigate} path={`project/${projectId}`}>View</Button>
-        <Button type={ButtonType.navigate} path={`edit/${projectId}/${title}/${description}/${client}`}>Edit Project</Button>
+        <Button type={ButtonType.navigate} path={`edit/${projectId}`}>Edit Project</Button>
         <button onClick={handleDeleteModal}>Delete Project</button>
       </div>
-      <div className={showModal ? "ModalWrapper ModalOnView" : "ModalWrapper"}>
-        <section className="ModalDelete Modal">
+      <div className={showModal && menuOpen === projectId ? "ModalWrapper ModalOnView" : "ModalWrapper"}>
+        <section ref={refModal} className="ModalDelete Modal">
           <h3>Are you sure that you want to delete this project?</h3>
           <p>This action is irreversible</p>
           <div className="barRow">

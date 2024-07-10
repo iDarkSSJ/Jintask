@@ -9,6 +9,8 @@ import ViewTaskModal from "./Modal/ViewTaskModal"
 
 type Props = {
   projectId: string
+  menuOpen: string | null
+  setMenuOpen: (menu: string | null) => void
   task: {
     id: string
     name: string
@@ -16,33 +18,34 @@ type Props = {
   }
 }
 
-function Task({ task, projectId }: Props): JSX.Element {
-  const [onView, setOnView] = useState(false)
+function Task({ task, projectId, menuOpen, setMenuOpen }: Props): JSX.Element {
+  const [onView, setOnView] = useState<boolean>(false)
   const [showDelModal, setShowDelModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [showViewModal, setShowViewModal] = useState(false)
-
 
 
   const refOne = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     const closeMenu = (e: MouseEvent) => {
+      e.stopPropagation()
       if (refOne.current && !refOne.current.contains(e.target as Node)) {
         setOnView(false)
       }
     }
 
-    if (onView) {
-      window.addEventListener("click", closeMenu)
-    }
-    return () => {
-      window.removeEventListener("click", closeMenu)
-    }
-  }, [onView])
+    if (onView && menuOpen === task.id) window.addEventListener("click", closeMenu)
+      else {
+        window.removeEventListener("mousedown", closeMenu)
+        setOnView(false)
+      }
+    
+  }, [onView, menuOpen, setMenuOpen, task.id])
 
   const handleOnClick = (e: React.MouseEvent): void => {
     e.stopPropagation()
+    setMenuOpen(task.id)
     setOnView(!onView)
   }
 
@@ -65,7 +68,7 @@ function Task({ task, projectId }: Props): JSX.Element {
       <button className="icon-button" onClick={handleOnClick}>
         <VerticalMenu />
       </button>
-      <div ref={refOne} className={onView ? "taskMenuButton onView" : "taskMenuButton"}>
+      <div ref={refOne} className={onView && menuOpen === task.id ? "taskMenuButton onView" : "taskMenuButton"}>
         <button onClick={() => handleModal(TaskModalName.VIEW_TASK)}>View</button>
         <button onClick={() => handleModal(TaskModalName.EDIT_TASK)}>Edit Task</button>
         <button onClick={() => handleModal(TaskModalName.DELETE_TASK)}>Delete Task</button>

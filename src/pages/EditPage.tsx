@@ -1,6 +1,6 @@
 /* eslint-disable react/react-in-jsx-scope */
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ButtonType, Project } from "../assets/types.d"
 import Button from "../components/Button"
 import { useProjectsContext } from "../context/context"
@@ -11,6 +11,13 @@ function EditProject(): JSX.Element {
   const { projects } = useProjectsContext()
 
   const project = projects.find(project => project.id === params.id)
+
+  useEffect(()=> {
+    if (project === undefined) {
+      window.location.href = '/'
+      return
+    }
+  }, [project])
 
   const INITIAL_STATE: Project = {
     id: project?.id || "",

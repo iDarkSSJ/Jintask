@@ -14,7 +14,7 @@ function Router(): JSX.Element {
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/create" element={<CreateProject />} />
-        <Route path="/edit/:id/:name/:description/:client" element={<EditProject/>}/>
+        <Route path="/edit/:id" element={<EditProject/>}/>
         {projects.length !== 0 ?
         projects.map((project) => (
           <Route key={project.id} path={`/project/${project.id}`} element={<Project projectId={project.id}/>} />
