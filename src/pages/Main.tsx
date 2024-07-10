@@ -27,13 +27,13 @@ function Main(): JSX.Element {
         {projects.length === 0 ? <p>There is not projects yet, <a href="/create">create new project</a></p> : ""}
         {projects && projects.map(project =>
           <Project
-          menuOpen={menuOpen}
-          setMenuOpen={setMenuOpen}
-          key={project.id}
-          title={project.name}
-          client={project.client}
-          description={project.description}
-          projectId={project.id}
+            menuOpen={menuOpen}
+            setMenuOpen={setMenuOpen}
+            key={project.id}
+            title={project.name}
+            client={project.client}
+            description={project.description}
+            projectId={project.id}
           />
         )}
       </section>
