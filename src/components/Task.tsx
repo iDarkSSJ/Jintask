@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/react-in-jsx-scope */
 
 import { useEffect, useRef, useState } from "react"
@@ -19,35 +20,41 @@ type Props = {
 }
 
 function Task({ task, projectId, menuOpen, setMenuOpen }: Props): JSX.Element {
-  const [onView, setOnView] = useState<boolean>(false)
   const [showDelModal, setShowDelModal] = useState(false)
   const [showEditModal, setShowEditModal] = useState(false)
   const [showViewModal, setShowViewModal] = useState(false)
 
 
-  const refOne = useRef<HTMLDivElement>(null)
+  const refMenu = useRef<HTMLDivElement>(null)
+  const refButton = useRef<HTMLButtonElement>(null)
 
-  useEffect(() => {
-    const closeMenu = (e: MouseEvent) => {
-      e.stopPropagation()
-      if (refOne.current && !refOne.current.contains(e.target as Node)) {
-        setOnView(false)
-      }
+  const handleOnClick = () => {
+    const newMenuOpen = menuOpen === task.id ? "" : task.id
+    setMenuOpen(newMenuOpen)
+  }
+
+  const handleClickOutside = (e: MouseEvent):void => {
+    if (
+      refMenu &&
+      refButton &&
+      !refMenu.current?.contains(e.target as Node) &&
+      !refButton.current?.contains(e.target as Node)
+    ) {
+      setMenuOpen("")
+    }
+  }
+
+  useEffect(()=> {
+    if (task.id === menuOpen) {
+      document.addEventListener("mousedown", handleClickOutside)
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside)
     }
 
-    if (onView && menuOpen === task.id) window.addEventListener("click", closeMenu)
-      else {
-        window.removeEventListener("mousedown", closeMenu)
-        setOnView(false)
-      }
-    
-  }, [onView, menuOpen, setMenuOpen, task.id])
-
-  const handleOnClick = (e: React.MouseEvent): void => {
-    e.stopPropagation()
-    setMenuOpen(task.id)
-    setOnView(!onView)
-  }
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside)
+    }
+  }, [menuOpen, task.id])
 
   const handleModal = (name: TaskModalName): void => {
     if (name === TaskModalName.EDIT_TASK) {
@@ -65,10 +72,10 @@ function Task({ task, projectId, menuOpen, setMenuOpen }: Props): JSX.Element {
     <div className="Task">
       <h4>{task.name}</h4>
       <p>{task.description}</p>
-      <button className="icon-button" onClick={handleOnClick}>
+      <button ref={refButton} className="icon-button" onClick={handleOnClick}>
         <VerticalMenu />
       </button>
-      <div ref={refOne} className={onView && menuOpen === task.id ? "taskMenuButton onView" : "taskMenuButton"}>
+      <div ref={refMenu} className={menuOpen === task.id ? "taskMenuButton onView" : "taskMenuButton"}>
         <button onClick={() => handleModal(TaskModalName.VIEW_TASK)}>View</button>
         <button onClick={() => handleModal(TaskModalName.EDIT_TASK)}>Edit Task</button>
         <button onClick={() => handleModal(TaskModalName.DELETE_TASK)}>Delete Task</button>

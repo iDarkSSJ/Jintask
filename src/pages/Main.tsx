@@ -8,8 +8,9 @@ import { useProjectsContext } from "../context/context"
 
 
 function Main(): JSX.Element {
-  const [menuOpen, setMenuOpen] = useState<string | null>(null)
+  const [menuOpen, setMenuOpen] = useState<string>("")
   const { projects } = useProjectsContext()
+
   return (
 
     <main>

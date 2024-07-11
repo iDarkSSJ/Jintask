@@ -1,7 +1,7 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { createContext, useContext, ReactNode, useEffect } from "react";
 import useProjects from "./useProjects";
-import { Project, Task } from "../assets/types.d";
+import { Note, Project, Task } from "../assets/types.d";
 
 
 interface ProjectContextProps {
@@ -12,6 +12,8 @@ interface ProjectContextProps {
   createTask: (projectId: string, task: Task) => void;
   deleteTask: (projectId: string, taskId: string) => void;
   editTask: (projectId: string, taskId: string, task: Task) => void;
+  createTaskNote: (projectId: string, taskId: string, note: Note) => void;
+  deleteTaskNote: (projectId: string, taskId: string, noteId: string) => void;
 }
 
 
@@ -31,6 +33,8 @@ export const Provider = ({ children }: ProviderProps): JSX.Element => {
     createTask,
     deleteTask,
     editTask,
+    createTaskNote,
+    deleteTaskNote,
   } = useProjects();
 
   // ----------------------------------------------------------------
@@ -50,6 +54,8 @@ export const Provider = ({ children }: ProviderProps): JSX.Element => {
     createTask,
     deleteTask,
     editTask,
+    createTaskNote,
+    deleteTaskNote
   }
 
   return (

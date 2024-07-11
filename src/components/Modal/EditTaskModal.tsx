@@ -23,13 +23,15 @@ function EditTaskModal({ showEditModal, projectId, setShowEditModal, taskId }: P
     id: task?.id || "",
     name: task?.name || "",
     description: task?.description || '',
-    state: task?.state || TaskStatesEnum.pending
+    state: task?.state || TaskStatesEnum.pending,
+    createdDate: task?.createdDate || 0,
+    updatedDate: task?.updatedDate || 0
   }
 
   const [newTask, setNewTask] = useState<taskType>(INITIAL_STATE)
-  
+
   useEffect(() => {
-    const closeModal = (e: MouseEvent):void => {
+    const closeModal = (e: MouseEvent): void => {
       if (refOne.current && !refOne.current.contains(e.target as Node)) {
         setShowEditModal(false)
         setNewTask(INITIAL_STATE)
@@ -58,14 +60,14 @@ function EditTaskModal({ showEditModal, projectId, setShowEditModal, taskId }: P
 
         <form onSubmit={handleEditTask} className="editTaskForm">
           <label>
-          <span>State:</span>  
-          <select onChange={(e) => setNewTask({...newTask, state: e.target.value as TaskStatesEnum})} value={newTask?.state}>
-            {
-              Object.entries(SUPPORTED_TASK_STATES).map(([key, literal]) => {
-                return <option key={key} value={key}>{literal}</option>
-              })
-            }
-          </select>
+            <span>State:</span>
+            <select onChange={(e) => setNewTask({ ...newTask, state: e.target.value as TaskStatesEnum })} value={newTask?.state}>
+              {
+                Object.entries(SUPPORTED_TASK_STATES).map(([key, literal]) => {
+                  return <option key={key} value={key}>{literal}</option>
+                })
+              }
+            </select>
           </label>
           <label>
             <span>Task Name:</span>
@@ -74,7 +76,12 @@ function EditTaskModal({ showEditModal, projectId, setShowEditModal, taskId }: P
               required
               type="text"
               value={newTask.name}
-              onChange={(e) => setNewTask({ ...newTask, name: e.target.value, id: crypto.randomUUID().toString() })}
+              onChange={(e) => setNewTask({
+                ...newTask,
+                name: e.target.value,
+                id: crypto.randomUUID().toString(),
+                updatedDate: new Date().getTime()
+              })}
             />
           </label>
           <label>
@@ -82,7 +89,11 @@ function EditTaskModal({ showEditModal, projectId, setShowEditModal, taskId }: P
             <textarea
               required
               value={newTask.description}
-              onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
+              onChange={(e) => setNewTask({
+                ...newTask,
+                description: e.target.value,
+                updatedDate: new Date().getTime()
+              })}
             />
           </label>
           <input type="submit" value="Add" />

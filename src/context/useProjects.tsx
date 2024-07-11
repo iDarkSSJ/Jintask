@@ -1,5 +1,5 @@
 import { useReducer } from 'react'
-import { Action, Project, State, Task } from '../assets/types.d'
+import { Action, Note, Project, State, Task } from '../assets/types.d'
 
 
 
@@ -47,7 +47,7 @@ const reducer = (state: State, action: Action): State => {
   }
 
   if (type === "CREATE_TASK") {
-    const { projectId, Task } = action.payload;
+    const { projectId, Task } = action.payload
     return {
       ...state,
       projects: state.projects.map(project =>
@@ -84,6 +84,43 @@ const reducer = (state: State, action: Action): State => {
     }
   }
 
+  if (type === "CREATE_TASK_NOTE") {
+    const { projectId, taskId, Note } = action.payload
+    return {
+      projects: state.projects.map(project =>
+        project.id === projectId ? {
+          ...project,
+          tasks: project.tasks?.map(task =>
+            task.id === taskId ? {
+              ...task,
+              notes: task.notes?.map(note =>
+                note.id === note.id ? Note : note
+              )
+            } : task
+          )
+        } : project
+      )
+    }
+  }
+
+  if (type === "DELETE_TASK_NOTE") {
+    const { projectId, taskId, noteId } = action.payload
+    return {
+      projects: state.projects.map(project =>
+        project.id === projectId ? {
+          ...project,
+          tasks: project.tasks?.map(task =>
+            task.id === taskId ? {
+              ...task,
+              notes: task.notes?.filter(note =>
+                note.id !== noteId)
+            } : task
+          )
+        } : project
+      )
+    }
+  }
+
   return state
 }
 
@@ -93,40 +130,48 @@ const INITIAL_STATE: State = {
 }
 
 const init = (): State => {
-  const savedProjects = localStorage.getItem("projects");
-  return savedProjects ? JSON.parse(savedProjects) : INITIAL_STATE;
+  const savedProjects = localStorage.getItem("projects")
+  return savedProjects ? JSON.parse(savedProjects) : INITIAL_STATE
 }
 
 export const useProjects = () => {
-  const [state, dispatch] = useReducer(reducer, INITIAL_STATE, init);
+  const [state, dispatch] = useReducer(reducer, INITIAL_STATE, init)
 
   const saveState = (data: State) => {
-    dispatch({ type: 'SAVE_STATE', payload: {data} });
-  };
+    dispatch({ type: 'SAVE_STATE', payload: { data } })
+  }
 
   const deleteProject = (projectId: string) => {
-    dispatch({ type: 'DELETE_PROJECT', payload: { projectId } });
-  };
+    dispatch({ type: 'DELETE_PROJECT', payload: { projectId } })
+  }
 
   const createProject = (project: Project) => {
-    dispatch({ type: 'CREATE_PROJECT', payload: { Project: project } });
-  };
+    dispatch({ type: 'CREATE_PROJECT', payload: { Project: project } })
+  }
 
   const editProject = (projectId: string, project: Project) => {
-    dispatch({ type: 'EDIT_PROJECT', payload: { projectId, Project: project } });
-  };
+    dispatch({ type: 'EDIT_PROJECT', payload: { projectId, Project: project } })
+  }
 
   const createTask = (projectId: string, task: Task) => {
-    dispatch({ type: 'CREATE_TASK', payload: { projectId, Task: task } });
-  };
+    dispatch({ type: 'CREATE_TASK', payload: { projectId, Task: task } })
+  }
 
   const deleteTask = (projectId: string, taskId: string) => {
-    dispatch({ type: 'DELETE_TASK', payload: { projectId, taskId } });
-  };
+    dispatch({ type: 'DELETE_TASK', payload: { projectId, taskId } })
+  }
 
   const editTask = (projectId: string, taskId: string, task: Task) => {
-    dispatch({ type: 'EDIT_TASK', payload: { projectId, taskId, Task: task } });
-  };
+    dispatch({ type: 'EDIT_TASK', payload: { projectId, taskId, Task: task } })
+  }
+
+  const createTaskNote = (projectId: string, taskId: string, note: Note) => {
+    dispatch({ type: 'CREATE_TASK_NOTE', payload: { projectId, taskId, Note: note } })
+  }
+
+  const deleteTaskNote = (projectId: string, taskId: string, noteId: string) => {
+    dispatch({ type: 'DELETE_TASK_NOTE', payload: { projectId, taskId, noteId } })
+  }
 
   return {
     projects: state.projects,
@@ -138,7 +183,9 @@ export const useProjects = () => {
     createTask,
     deleteTask,
     editTask,
-  };
+    createTaskNote,
+    deleteTaskNote,
+  }
 }
 
 export default useProjects

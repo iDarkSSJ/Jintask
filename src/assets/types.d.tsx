@@ -28,11 +28,20 @@ export const SUPPORTED_TASK_STATES = {
 
 export type TaskStates = keyof typeof SUPPORTED_TASK_STATES
 
+export interface Note {
+  id: string
+  content: string
+  createdDate: number
+}
+
 export interface Task {
   id: string
   name: string
   description: string
   state: TaskStates
+  createdDate: number
+  updatedDate: number
+  notes: Note[]
 }
 
 export interface Project {
@@ -55,3 +64,5 @@ export type Action =
   | { type: "CREATE_TASK", payload: { projectId: string, Task: Task} }
   | { type: "DELETE_TASK", payload: { projectId: string, taskId: string } }
   | { type: "EDIT_TASK", payload: { projectId: string, taskId: string, Task: Task } }
+  | { type: "CREATE_TASK_NOTE", payload: { projectId: string, taskId: string, Note: Note } }
+  | { type: "DELETE_TASK_NOTE", payload: { projectId: string, taskId: string, noteId: string } }

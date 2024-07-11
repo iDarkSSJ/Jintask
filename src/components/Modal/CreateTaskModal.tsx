@@ -14,7 +14,10 @@ const INITIAL_STATE: taskType = {
   id: "",
   name: "",
   description: "",
-  state: TaskStatesEnum.pending
+  state: TaskStatesEnum.pending,
+  createdDate: 0,
+  updatedDate: 0,
+  notes: []
 }
 
 function CreateTaskModal({ showCreateModal, projectId, setShowCreateModal }: Props): JSX.Element {
@@ -22,7 +25,7 @@ function CreateTaskModal({ showCreateModal, projectId, setShowCreateModal }: Pro
   const refOne = useRef<HTMLElement>(null)
 
   const [newTask, setNewTask] = useState<taskType>(INITIAL_STATE)
-  
+
   useEffect(() => {
     const closeModal = (e: MouseEvent) => {
       if (refOne.current && !refOne.current.contains(e.target as Node)) {
@@ -46,7 +49,6 @@ function CreateTaskModal({ showCreateModal, projectId, setShowCreateModal }: Pro
     createTask(projectId, newTask)
     setNewTask(INITIAL_STATE)
   }
-
   return (
     <div className={showCreateModal ? "ModalWrapper ModalOnView" : "ModalWrapper"}>
       <section ref={refOne} className="ModalCreate Modal">
@@ -61,7 +63,16 @@ function CreateTaskModal({ showCreateModal, projectId, setShowCreateModal }: Pro
               required
               type="text"
               value={newTask.name}
-              onChange={(e) => setNewTask({ ...newTask, name: e.target.value, id: crypto.randomUUID().toString() })}
+              onChange={(e) => {
+                setNewTask({
+                  ...newTask,
+                  name: e.target.value,
+                  id: crypto.randomUUID().toString(),
+                  createdDate: new Date().getTime(),
+                  updatedDate: new Date().getTime()
+                })
+              }
+              }
             />
           </label>
           <label>
@@ -69,7 +80,15 @@ function CreateTaskModal({ showCreateModal, projectId, setShowCreateModal }: Pro
             <textarea
               required
               value={newTask.description}
-              onChange={(e) => setNewTask({ ...newTask, description: e.target.value })}
+              onChange={(e) => {
+                setNewTask({
+                  ...newTask,
+                  description: e.target.value,
+                  createdDate: new Date().getTime(),
+                  updatedDate: new Date().getTime()
+                })
+              }
+              }
             />
           </label>
           <input type="submit" value="Add" />
