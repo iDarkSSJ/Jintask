@@ -1,5 +1,5 @@
 /* eslint-disable react/react-in-jsx-scope */
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
+import { Routes, Route, Navigate, HashRouter } from "react-router-dom"
 import Main from "../pages/Main"
 import CreateProject from "../pages/CreateProject"
 import { useProjectsContext } from "../context/context"
@@ -10,7 +10,7 @@ function Router(): JSX.Element {
   const { projects } = useProjectsContext()
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/create" element={<CreateProject />} />
@@ -22,7 +22,7 @@ function Router(): JSX.Element {
         <Route path="*" element={<Navigate to={"/"} />} />
         <Route path="/main" element={<Navigate to={"/"}/>} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
