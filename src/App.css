@@ -357,8 +357,15 @@ option {
 
 .TasksList {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
   justify-content: space-between;
+}
+
+@media (min-width: 600px) {
+  .TaskList {
+    justify-content: space-around;
+  }
 }
 
 .TaskStatus {
