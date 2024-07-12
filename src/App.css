@@ -335,6 +335,12 @@ option {
   }
 }
 
+@media (min-width: 850px) {
+  .ModalView {
+    min-width: 100%;
+  }
+}
+
 .projectFeatures {
   h2 {
     font-size: 2.5rem;
