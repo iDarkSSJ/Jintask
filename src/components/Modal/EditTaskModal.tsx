@@ -25,7 +25,8 @@ function EditTaskModal({ showEditModal, projectId, setShowEditModal, taskId }: P
     description: task?.description || '',
     state: task?.state || TaskStatesEnum.pending,
     createdDate: task?.createdDate || 0,
-    updatedDate: task?.updatedDate || 0
+    updatedDate: task?.updatedDate || 0,
+    notes: task?.notes || []
   }
 
   const [newTask, setNewTask] = useState<taskType>(INITIAL_STATE)
