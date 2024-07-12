@@ -5,6 +5,7 @@ import { VerticalMenu } from "../assets/icons"
 import { ButtonType } from "../assets/types.d"
 import Button from "./Button"
 import DeleteProjectModal from "./Modal/DeleteProjectModal"
+import { Link } from "react-router-dom"
 
 type ProjectProps = {
   title: string
@@ -56,7 +57,7 @@ function ProjectInMain({ title, description, client, projectId, menuOpen, setMen
 
   return (
     <article className="project">
-      <h3><a href={"/project/" + projectId}>{title}</a></h3>
+      <h3><Link to={`/project/${projectId}`}>{title}</Link></h3>
       <p>Client: {client}</p>
       <p>{description}</p>
       <div className="MenuDropDown">

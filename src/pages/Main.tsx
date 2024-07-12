@@ -5,6 +5,7 @@ import { ButtonType } from "../assets/types.d"
 import Button from "../components/Button"
 import Project from "../components/ProjectInMain"
 import { useProjectsContext } from "../context/context"
+import { Link } from "react-router-dom"
 
 
 function Main(): JSX.Element {
@@ -24,7 +25,7 @@ function Main(): JSX.Element {
       </section>
 
       <section className="projects">
-        {projects.length === 0 ? <p>There is not projects yet, <a href="/create">create new project</a></p> : ""}
+        {projects.length === 0 ? <p>There is not projects yet, <Link to={"/create"}>create new project</Link></p> : ""}
         {projects && projects.map(project =>
           <Project
             menuOpen={menuOpen}
